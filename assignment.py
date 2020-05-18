@@ -44,8 +44,7 @@ check_accuracy(training_data, training_label, w0, w1, w2, forward)
 
 #Gradient descent
 for i in range(100):
-
-    #Select random batch from the dataset
+    #Select the random batch from the dataset
     random_indices = np.random.choice(training_data.shape[0], batch_size, replace=False)
     X = training_data[random_indices]
     y = training_label[random_indices]
