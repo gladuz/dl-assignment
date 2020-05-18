@@ -9,11 +9,13 @@ def accuracy(ypred, y):
     return correct / pred.size * 100
 
 def check_accuracy(X, y, w0, w1, w2, forward, step=-1):
+    #Calculate the prediction using the forward function and the accuracy
     _, _, out = forward(X, w0, w1, w2)
+    accuracy_of_model = accuracy(out, y)
     if step == -1:
-        print("Accuracy of the model is", accuracy(out, y))
+        print("Accuracy of the model before the training is:", accuracy_of_model)
     else:
-        print("Accuracy of the model after step {:d} is {:f}".format(step+1, accuracy(out, y)))
+        print("Accuracy of the model after step {:d} is {:f}".format(step+1, accuracy_of_model))
 
 def ReLU(z):
     return z * (z > 0)

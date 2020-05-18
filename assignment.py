@@ -10,6 +10,7 @@ def generate_data():
     return data[:, 0], data[:, 1]
 
 training_data, training_label = generate_data()
+test_data, test_label = generate_data()
 
 #Batch size and learning rate constants
 batch_size = 50
@@ -40,7 +41,8 @@ def forward(X, w0, w1, w2):
     return z1, z2, z3
 
 #Check the accuracy of the model before back propagation
-check_accuracy(training_data, training_label, w0, w1, w2, forward)
+check_accuracy(test_data, test_label, w0, w1, w2, forward)
+print("\nStarting the gradient descent...\n")
 
 #Gradient descent
 for i in range(100):
@@ -56,6 +58,8 @@ for i in range(100):
     d3 = cost(z3, y)
     d2 = np.dot(w2, d3.T).T * dReLU(z2)
     d1 = np.dot(w1, d2.T).T * dReLU(z1)
+    
+    #Calculate gradient update for weights
     dw2 = np.dot(z2.T, d3)
     dw1 = np.dot(z1.T, d2)
     dw0 = np.dot(X.T, d1)
@@ -65,5 +69,6 @@ for i in range(100):
     w1 = w1 - learning_rate*dw1
     w2 = w2 - learning_rate*dw2
 
-    #Check the accuracy of the model and print
-    check_accuracy(training_data, training_label, w0, w1, w2, forward, step=i)
+    #Check the accuracy of the model and print it every ten steps
+    if(i % 10 == 9):
+        check_accuracy(test_data, test_label, w0, w1, w2, forward, step=i)
