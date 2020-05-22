@@ -1,6 +1,6 @@
 import numpy as np
 #Importing helper functions from tools.py. They are moved to separate file in order to increase readability
-from tools import accuracy, check_accuracy, ReLU, dReLU, cost, mse
+from tools import accuracy, ReLU, dReLU, cost, mse
 
 def generate_data():
     first_class = np.random.multivariate_normal((1, 1), [[1,0], [0,1]], 50)
@@ -41,9 +41,10 @@ def forward(X, w0, w1, w2):
     return z1, z2, z3
 
 #Check the accuracy of the model before back propagation
-check_accuracy(test_data, test_label, w0, w1, w2, forward)
-print("\nStarting the gradient descent...\n")
-
+_, _, out = forward(test_data, w0, w1, w2)
+test_accuracy = accuracy(out, test_label)
+print("Accuracy of the model on test data before SGD is {}".format(test_accuracy))
+print("Starting SGD...")
 #Gradient descent
 for i in range(100):
     #Select the random batch from the dataset
@@ -69,6 +70,6 @@ for i in range(100):
     w1 = w1 - learning_rate*dw1
     w2 = w2 - learning_rate*dw2
 
-    #Check the accuracy of the model and print it every ten steps
-    if(i % 10 == 9):
-        check_accuracy(test_data, test_label, w0, w1, w2, forward, step=i)
+#print out the accuracy after the model training
+_, _, out = forward(test_data, w0, w1, w2)
+print("Accuracy of the model on test data after SGD is {}".format(accuracy(out, test_label)))
